@@ -1,11 +1,25 @@
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useQuery } from "@tanstack/react-query";
 
-const Events = () => {
-  const upcomingEvents = [
+const fetchEvents = async () => {
+  // Simulating an API call
+  await new Promise(resolve => setTimeout(resolve, 1000));
+  return [
     { id: 1, name: "Summer Spectacular", date: "2024-07-15", location: "Central Park" },
     { id: 2, name: "Autumn Rhythms", date: "2024-09-22", location: "City Theater" },
     { id: 3, name: "Winter Wonderland Show", date: "2024-12-10", location: "Grand Hall" },
   ];
+};
+
+const Events = () => {
+  const { data: upcomingEvents, isLoading, error } = useQuery({
+    queryKey: ['events'],
+    queryFn: fetchEvents,
+  });
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>An error occurred: {error.message}</div>;
 
   return (
     <div className="container mx-auto py-8">

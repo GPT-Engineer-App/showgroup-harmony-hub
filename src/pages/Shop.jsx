@@ -1,19 +1,44 @@
 import { useState } from "react";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
-const Shop = () => {
-  const [cart, setCart] = useState([]);
-
-  const products = [
+const fetchProducts = async () => {
+  // Simulating an API call
+  await new Promise(resolve => setTimeout(resolve, 1000));
+  return [
     { id: 1, name: "T-Shirt", price: 25 },
     { id: 2, name: "Poster", price: 15 },
     { id: 3, name: "Album CD", price: 20 },
   ];
+};
+
+const Shop = () => {
+  const [cart, setCart] = useState([]);
+  const queryClient = useQueryClient();
+
+  const { data: products, isLoading, error } = useQuery({
+    queryKey: ['products'],
+    queryFn: fetchProducts,
+  });
+
+  const addToCartMutation = useMutation({
+    mutationFn: (product) => {
+      // Simulating an API call to add to cart
+      return new Promise(resolve => setTimeout(() => resolve(product), 500));
+    },
+    onSuccess: (product) => {
+      setCart(prevCart => [...prevCart, product]);
+      queryClient.invalidateQueries('cart');
+    },
+  });
 
   const addToCart = (product) => {
-    setCart([...cart, product]);
+    addToCartMutation.mutate(product);
   };
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>An error occurred: {error.message}</div>;
 
   return (
     <div className="container mx-auto py-8">
