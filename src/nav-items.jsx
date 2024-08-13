@@ -9,7 +9,7 @@ import Shop from "./pages/Shop.jsx";
  */
 export const navItems = [
   {
-    title: "Home",
+    title: "Hjem",
     to: "/",
     icon: <Home className="h-4 w-4" />,
     page: <Index />,
@@ -21,7 +21,7 @@ export const navItems = [
     page: <Events />,
   },
   {
-    title: "About",
+    title: "Om oss",
     to: "/about",
     icon: <Users className="h-4 w-4" />,
     page: <About />,
