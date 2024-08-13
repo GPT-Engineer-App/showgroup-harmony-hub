@@ -4,13 +4,6 @@ import { Link } from "react-router-dom";
 const Index = () => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-[#E25B45] p-4">
-      <div className="mb-8">
-        <img
-          src="/background-image.jpg"
-          alt="Rævkroklosjen"
-          className="max-w-full h-auto object-contain"
-        />
-      </div>
       <div className="text-center text-white">
         <h1 className="text-4xl md:text-6xl font-bold mb-8">Velkommen til Rævkroklosjen</h1>
         <div className="space-x-4">
