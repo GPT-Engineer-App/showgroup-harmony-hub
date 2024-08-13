@@ -4,13 +4,18 @@ import { Button } from "@/components/ui/button";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 const fetchProducts = async () => {
-  // Simulating an API call
-  await new Promise(resolve => setTimeout(resolve, 1000));
-  return [
-    { id: 1, name: "T-Shirt", price: 25 },
-    { id: 2, name: "Poster", price: 15 },
-    { id: 3, name: "Album CD", price: 20 },
-  ];
+  try {
+    // Simulating an API call
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    return [
+      { id: 1, name: "T-Shirt", price: 25 },
+      { id: 2, name: "Poster", price: 15 },
+      { id: 3, name: "Album CD", price: 20 },
+    ];
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    throw error;
+  }
 };
 
 const Shop = () => {
@@ -20,16 +25,31 @@ const Shop = () => {
   const { data: products, isLoading, error } = useQuery({
     queryKey: ['products'],
     queryFn: fetchProducts,
+    onError: (error) => {
+      console.error("Error in products query:", error);
+    },
   });
 
   const addToCartMutation = useMutation({
     mutationFn: (product) => {
       // Simulating an API call to add to cart
-      return new Promise(resolve => setTimeout(() => resolve(product), 500));
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          if (Math.random() < 0.9) { // 90% success rate
+            resolve(product);
+          } else {
+            reject(new Error("Failed to add to cart"));
+          }
+        }, 500);
+      });
     },
     onSuccess: (product) => {
       setCart(prevCart => [...prevCart, product]);
       queryClient.invalidateQueries('cart');
+    },
+    onError: (error) => {
+      console.error("Error adding to cart:", error);
+      // You can add a toast notification here to inform the user
     },
   });
 
