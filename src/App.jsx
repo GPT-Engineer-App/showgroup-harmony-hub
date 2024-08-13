@@ -19,11 +19,11 @@ const App = () => (
       <Toaster />
       <BrowserRouter>
         <div className="min-h-screen flex flex-col">
-          <nav className="bg-gray-800 text-white p-4">
-            <ul className="flex space-x-4">
+          <nav className="bg-yellow-200 text-gray-800 p-4">
+            <ul className="flex justify-center space-x-8">
               {navItems.map(({ title, to, icon }) => (
                 <li key={to}>
-                  <Link to={to} className="flex items-center space-x-1 hover:text-gray-300">
+                  <Link to={to} className="flex items-center space-x-2 hover:text-gray-600">
                     {icon}
                     <span>{title}</span>
                   </Link>
